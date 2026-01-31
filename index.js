@@ -1,10 +1,18 @@
 const express = require('express');
 const cors = require('cors')
 const app = express()
-const {initializeDatabase} = require('./database/database.connecr.js');
+const {initializeDatabase} = require('./database/database.connect.js');
+
+
+
+const Book = require('./models/book.models')
+initializeDatabase().catch(err => {
+    console.error('Failed to connect to database:', err);
+});
+
+
 app.use(express.json());
 app.use(cors())
-const Book = require('./models/book.models')
 
 //q1
 
@@ -248,17 +256,5 @@ const addNewBookData = async (bookData) => {
 
 
 
-const PORT = 3001
-const start = async () => {
-    try{
-    await initializeDatabase()
-    app.listen(PORT , () => {
-        console.log(`Server is running on port ${PORT}`)
-    })
-    }
-    catch(error){
-        throw error.message
-    }
-}
 
- start()
+module.exports = app
